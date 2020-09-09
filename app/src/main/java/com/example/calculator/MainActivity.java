@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        result = (EditText) findViewById(R.id.result);
+        result = (EditText) findViewById(R.id.resultBox);
         newNumber = (EditText) findViewById(R.id.newNumber);
         displayOperation = (TextView) findViewById(R.id.operation);
 
@@ -116,7 +116,43 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void performOperation(String value, String operation){
+
         displayOperation.setText(operation);
+
+        if (operand1 == null) {
+            operand1 = Double.valueOf(value);
+        }
+        else {
+            operand2 = Double.valueOf(value);
+
+            if (pendingOperation.equals("=")) {
+                pendingOperation = operation;
+            }
+            switch (pendingOperation) {
+                case "=":
+                    operand1 = operand2;
+                    break;
+                case "/":
+                    if (operand2 == 0){
+                        operand1 = 0.0;
+                    }
+                    else {
+                        operand1 /= operand2;
+                    }
+                    break;
+                case "*":
+                    operand1 *= operand2;
+                    break;
+                case "-":
+                    operand1 -= operand2;
+                    break;
+                case "+":
+                    operand1 += operand2;
+                    break;
+            }
+        }
+        result.setText(operand1.toString());
+        newNumber.setText("");
     }
 
 }
