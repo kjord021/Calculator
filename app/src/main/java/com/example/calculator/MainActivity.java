@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     //array to hold numerical buttons
     ArrayList<Button> numericalButtons = new ArrayList<>();
 
+    //array to hold operational buttons
+    ArrayList<Button> operationalButtons = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +60,17 @@ public class MainActivity extends AppCompatActivity {
         Button buttonDot = (Button) findViewById(R.id.buttonDot);
         numericalButtons.add(buttonDot);
 
-        //buttons that perform operations
+        //get buttons that perform operations and add to array
         Button buttonDivide = (Button) findViewById(R.id.buttonDivide);
+        operationalButtons.add(buttonDivide);
         Button buttonMultiply = (Button) findViewById(R.id.buttonMultiply);
+        operationalButtons.add(buttonMultiply);
         Button buttonMinus = (Button) findViewById(R.id.buttonMinus);
+        operationalButtons.add(buttonMinus);
         Button buttonPlus = (Button) findViewById(R.id.buttonPlus);
+        operationalButtons.add(buttonPlus);
         Button buttonEquals = (Button) findViewById(R.id.buttonEquals);
+        operationalButtons.add(buttonEquals);
 
         //Define a listener for number button press
         View.OnClickListener numberListener = new View.OnClickListener() {
@@ -78,5 +86,37 @@ public class MainActivity extends AppCompatActivity {
         for (Button b : numericalButtons){
             b.setOnClickListener(numberListener);
         }
+
+        //Define a listener for operation button press
+        View.OnClickListener operationListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button b = (Button) v;
+                String operation = b.getText().toString();
+                String value = newNumber.getText().toString();
+
+                if (value.length() != 0){
+                    performOperation(value, operation);
+                }
+
+                pendingOperation = operation;
+                displayOperation.setText(pendingOperation);
+
+            }
+        };
+        //assign a listner to all the buttons in the list
+        for(Button b : operationalButtons){
+            b.setOnClickListener(operationListener);
+        }
     }
+
+    /*Performs the arithmetic operation
+    *@Param The current value
+    *@Param The operation to perform
+     */
+
+    private void performOperation(String value, String operation){
+        displayOperation.setText(operation);
+    }
+
 }
