@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables to hold the operands and type of calculations
     private Double operand1 = null;
-    private Double operand2 = null;
     private String pendingOperation = "=";
 
     //array to hold numerical buttons
@@ -95,8 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 String operation = b.getText().toString();
                 String value = newNumber.getText().toString();
 
-                if (value.length() != 0){
-                    performOperation(value, operation);
+                try {
+                    Double doubleValue = Double.valueOf(value);
+                    performOperation(doubleValue, operation);
+                }
+                catch (NumberFormatException e) {
+                    newNumber.setText("");
                 }
 
                 pendingOperation = operation;
@@ -115,39 +118,38 @@ public class MainActivity extends AppCompatActivity {
     *@Param The operation to perform
      */
 
-    private void performOperation(String value, String operation){
-
+    private void performOperation(Double value, String operation){
+        
         displayOperation.setText(operation);
 
         if (operand1 == null) {
-            operand1 = Double.valueOf(value);
+            operand1 = value;
         }
         else {
-            operand2 = Double.valueOf(value);
 
             if (pendingOperation.equals("=")) {
                 pendingOperation = operation;
             }
             switch (pendingOperation) {
                 case "=":
-                    operand1 = operand2;
+                    operand1 = value;
                     break;
                 case "/":
-                    if (operand2 == 0){
+                    if (value == 0){
                         operand1 = 0.0;
                     }
                     else {
-                        operand1 /= operand2;
+                        operand1 /= value;
                     }
                     break;
                 case "*":
-                    operand1 *= operand2;
+                    operand1 *= value;
                     break;
                 case "-":
-                    operand1 -= operand2;
+                    operand1 -= value;
                     break;
                 case "+":
-                    operand1 += operand2;
+                    operand1 += value;
                     break;
             }
         }
