@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 if (specialty.equalsIgnoreCase("Clear")){
                     newNumber.setText("");
                     result.setText("");
-                    
+                    operand1 = null;
                 }
             }
         };
