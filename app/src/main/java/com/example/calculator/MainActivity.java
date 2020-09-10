@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     //array to hold operational buttons
     ArrayList<Button> operationalButtons = new ArrayList<>();
 
+    //array to hold specialty buttons
+    ArrayList<Button> specialtyButtons = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
         Button buttonEquals = (Button) findViewById(R.id.buttonEquals);
         operationalButtons.add(buttonEquals);
 
+        //get specialty buttons
+        Button buttonNeg = (Button) findViewById(R.id.buttonNeg);
+        specialtyButtons.add(buttonNeg);
+        Button buttonClear = (Button) findViewById(R.id.buttonClear);
+        specialtyButtons.add(buttonClear);
+
         //Define a listener for number button press
         View.OnClickListener numberListener = new View.OnClickListener() {
             @Override
@@ -111,6 +120,26 @@ public class MainActivity extends AppCompatActivity {
         //assign a listner to all the buttons in the list
         for(Button b : operationalButtons){
             b.setOnClickListener(operationListener);
+        }
+
+        //define a listener for specialty buttons
+        View.OnClickListener specialtyListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button b = (Button) v;
+                String specialty = b.getText().toString();
+
+                if (specialty.equalsIgnoreCase("Clear")){
+                    newNumber.setText("");
+                    result.setText("");
+                    
+                }
+            }
+        };
+
+        //assign a listner to all buttons in the list
+        for (Button b : specialtyButtons){
+            b.setOnClickListener(specialtyListener);
         }
 
         //retrieves the state on rotate
