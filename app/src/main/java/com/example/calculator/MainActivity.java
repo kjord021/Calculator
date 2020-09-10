@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText newNumber;
     private TextView displayOperation;
 
-    //Variables to hold the operands and type of calculations
+    //Variables to hold the operand and type of calculations
     private Double operand1 = null;
     private String pendingOperation = "=";
 
@@ -111,15 +112,20 @@ public class MainActivity extends AppCompatActivity {
         for(Button b : operationalButtons){
             b.setOnClickListener(operationListener);
         }
+
+        //retrieves the state on rotate
+        if (savedInstanceState != null){
+            operand1 = savedInstanceState.getDouble("firstNumber");
+            result.setText(operand1.toString());
+        }
     }
 
     /*Performs the arithmetic operation
     *@Param The current value
     *@Param The operation to perform
      */
-
     private void performOperation(Double value, String operation){
-        
+
         displayOperation.setText(operation);
 
         if (operand1 == null) {
@@ -155,6 +161,15 @@ public class MainActivity extends AppCompatActivity {
         }
         result.setText(operand1.toString());
         newNumber.setText("");
+    }
+
+    /*Saves the state of the device on rotate
+     *@Param The out state of the app
+     */
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble("firstNumber", operand1);
     }
 
 }
