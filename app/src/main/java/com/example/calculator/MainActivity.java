@@ -74,10 +74,11 @@ public class MainActivity extends AppCompatActivity {
         operationalButtons.add(buttonPlus);
         Button buttonEquals = (Button) findViewById(R.id.buttonEquals);
         operationalButtons.add(buttonEquals);
+        final Button buttonNeg = (Button) findViewById(R.id.buttonNeg);
+        operationalButtons.add(buttonNeg);
+        buttonNeg.setEnabled(false);
 
         //get specialty buttons
-        Button buttonNeg = (Button) findViewById(R.id.buttonNeg);
-        specialtyButtons.add(buttonNeg);
         Button buttonClear = (Button) findViewById(R.id.buttonClear);
         specialtyButtons.add(buttonClear);
 
@@ -89,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
                 Button b = (Button) v;
                 //get the text (i.e number) of that button and add it to the newNumber TextView
                 newNumber.append(b.getText().toString());
+
+                if (newNumber.length() > 0){
+                    buttonNeg.setEnabled(true);
+                }
+                else{
+                    buttonNeg.setEnabled(false);
+                }
             }
         };
         //assign the listener to all the buttons in the list
@@ -103,15 +111,27 @@ public class MainActivity extends AppCompatActivity {
                 Button b = (Button) v;
                 String operation = b.getText().toString();
                 String value = newNumber.getText().toString();
+                buttonNeg.setEnabled(false);
 
-                try {
-                    Double doubleValue = Double.valueOf(value);
-                    performOperation(doubleValue, operation);
+                if (operation.equalsIgnoreCase("Neg")){
+                    try {
+                        Double doubleValue = Double.valueOf(value);
+                        doubleValue *= -1;
+                        performOperation(doubleValue, operation);
+                    }
+                    catch (NumberFormatException e) {
+                        newNumber.setText("");
+                    }
                 }
-                catch (NumberFormatException e) {
-                    newNumber.setText("");
+                else {
+                    try {
+                        Double doubleValue = Double.valueOf(value);
+                        performOperation(doubleValue, operation);
+                    }
+                    catch (NumberFormatException e) {
+                        newNumber.setText("");
+                    }
                 }
-
                 pendingOperation = operation;
                 displayOperation.setText(pendingOperation);
 
@@ -132,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 if (specialty.equalsIgnoreCase("Clear")){
                     newNumber.setText("");
                     result.setText("");
+                    displayOperation.setText("");
                     operand1 = null;
                 }
             }
